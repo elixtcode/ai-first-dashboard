@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My AI Shopify Dashboard</title>
+    <script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body { margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+    <script type="text/babel">
+        // Your dashboard will go here - I'll provide the simple version
+        const React = window.React;
+        const { useState } = React;
+        
+        const Dashboard = () => {
+            const [completedTasks, setCompletedTasks] = useState({});
+            const [activePhase, setActivePhase] = useState(0);
+            
+            const toggleTask = (phaseIndex, taskIndex) => {
+                const taskId = `${phaseIndex}-${taskIndex}`;
+                setCompletedTasks(prev => ({
+                    ...prev,
+                    [taskId]: !prev[taskId]
+                }));
+            };
+            
+            const phases = [
+                {
+                    title: "Setup & Foundation",
+                    duration: "Days 1-3",
+                    tasks: [
+                        "Create Payment Tracking Sheet",
+                        "Set up Email & Shopify Access", 
+                        "Choose Development Environment"
+                    ]
+                },
+                {
+                    title: "Data Collection",
+                    duration: "Days 3-7", 
+                    tasks: [
+                        "Analyze Existing Data",
+                        "Research Target Products",
+                        "Create Competitive Analysis"
+                    ]
+                },
+                {
+                    title: "AI Image Enhancement",
+                    duration: "Days 7-14",
+                    tasks: [
+                        "Collect Product Images",
+                        "Set up AI Enhancement Pipeline",
+                        "Create Quality Control System"
+                    ]
+                },
+                {
+                    title: "Shopify Setup",
+                    duration: "Days 14-21",
+                    tasks: [
+                        "Structure Product Information",
+                        "Generate AI Content",
+                        "Prepare Bulk Upload Files"
+                    ]
+                }
+            ];
+            
+            return (
+                <div style={{ maxWidth: '1200px', margin: '0 auto', padding: '20px', backgroundColor: '#f9fafb', minHeight: '100vh' }}>
+                    <div style={{ backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '24px', marginBottom: '24px' }}>
+                        <h1 style={{ fontSize: '28px', fontWeight: 'bold', color: '#1f2937', marginBottom: '8px' }}>
+                            🚀 AI-First Shopify Dashboard
+                        </h1>
+                        <p style={{ color: '#6b7280', marginBottom: '16px' }}>
+                            Your step-by-step guide to building an automated product system
+                        </p>
+                        
+                        <div style={{ background: 'linear-gradient(to right, #dbeafe, #e0e7ff)', padding: '16px', borderRadius: '8px' }}>
+                            <h3 style={{ fontSize: '14px', fontWeight: '500', color: '#374151', marginBottom: '8px' }}>
+                                🎯 Overall Progress
+                            </h3>
+                            <div style={{ width: '100%', backgroundColor: '#e5e7eb', borderRadius: '9999px', height: '12px' }}>
+                                <div style={{ backgroundColor: '#3b82f6', height: '12px', borderRadius: '9999px', width: '25%' }}></div>
+                            </div>
+                            <p style={{ fontSize: '12px', color: '#6b7280', marginTop: '4px' }}>25% complete - You're doing great!</p>
+                        </div>
+                    </div>
+                    
+                    <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))', gap: '16px', marginBottom: '24px' }}>
+                        {phases.map((phase, index) => (
+                            <div 
+                                key={index}
+                                style={{ 
+                                    backgroundColor: activePhase === index ? '#dbeafe' : 'white',
+                                    border: activePhase === index ? '2px solid #3b82f6' : '2px solid #e5e7eb',
+                                    borderRadius: '12px',
+                                    padding: '16px',
+                                    cursor: 'pointer',
+                                    transition: 'all 0.2s'
+                                }}
+                                onClick={() => setActivePhase(index)}
+                            >
+                                <h3 style={{ fontSize: '16px', fontWeight: '600', color: '#1f2937', marginBottom: '8px' }}>
+                                    {phase.title}
+                                </h3>
+                                <p style={{ fontSize: '12px', color: '#6b7280', marginBottom: '12px' }}>
+                                    {phase.duration}
+                                </p>
+                                <div style={{ fontSize: '12px', color: '#059669' }}>
+                                    {phase.tasks.filter((_, taskIndex) => completedTasks[`${index}-${taskIndex}`]).length}/{phase.tasks.length} tasks done
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                    
+                    <div style={{ backgroundColor: 'white', borderRadius: '12px', boxShadow: '0 4px 6px rgba(0,0,0,0.1)', padding: '24px' }}>
+                        <h2 style={{ fontSize: '20px', fontWeight: 'bold', color: '#1f2937', marginBottom: '16px' }}>
+                            📋 {phases[activePhase].title}
+                        </h2>
+                        
+                        <div style={{ space: '16px' }}>
+                            {phases[activePhase].tasks.map((task, taskIndex) => {
+                                const taskId = `${activePhase}-${taskIndex}`;
+                                const isCompleted = completedTasks[taskId];
+                                
+                                return (
+                                    <div key={taskIndex} style={{ display: 'flex', alignItems: 'center', padding: '12px', backgroundColor: '#f9fafb', borderRadius: '8px', marginBottom: '8px' }}>
+                                        <input
+                                            type="checkbox"
+                                            checked={isCompleted || false}
+                                            onChange={() => toggleTask(activePhase, taskIndex)}
+                                            style={{ marginRight: '12px', width: '16px', height: '16px' }}
+                                        />
+                                        <span style={{ 
+                                            textDecoration: isCompleted ? 'line-through' : 'none',
+                                            color: isCompleted ? '#6b7280' : '#1f2937',
+                                            fontSize: '14px'
+                                        }}>
+                                            {task}
+                                        </span>
+                                    </div>
+                                );
+                            })}
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+        
+        ReactDOM.render(<Dashboard />, document.getElementById('root'));
+    </script>
+</body>
+</html>
